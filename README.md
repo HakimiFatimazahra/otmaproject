@@ -20,7 +20,7 @@ OTMAProject est une application web développée avec Django pour la saisie et l
 - **Python 3.11**
 - **Django 4.x**
 - **Bootstrap 5** (pour le design)
-- **SQLite** (base de données par défaut)
+- **Postgresql** (base de données )
 
 ---
 
