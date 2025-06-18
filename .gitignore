@@ -1,0 +1,21 @@
+# Fichiers Python
+__pycache__/
+*.py[cod]
+
+# Base de données
+db.sqlite3
+db.postgresql
+
+# Environnement virtuel
+env/
+venv/
+
+# Fichiers Django statiques et médias
+media/
+staticfiles/
+
+# Fichiers de logs
+*.log
+
+# Fichiers d'environnement
+.env
