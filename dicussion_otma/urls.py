@@ -38,7 +38,7 @@ urlpatterns = [
     path('validefile/', omta_views.modifier_checklists, name='validefile'),
     
     path('logout/', omta_views.logout_view, name='logout'),
-
+    path('dashboard/', omta_views.dashboard_view, name='dashboard'),
 
     #path('changer_statut/<int:fiche_id>/', omta_views.changer_statut, name='changer_statut'),
 ]

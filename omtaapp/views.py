@@ -246,3 +246,19 @@ def modifier_checklists(request):
     checklists = CheckList.objects.all
     
     return render(request, 'validefile.html', {'checklists': checklists})
+from django.shortcuts import render
+from .models import CheckList
+from django.db.models import Count
+import json
+
+def dashboard_view(request):
+    total_fiches = CheckList.objects.count()
+    par_statut = list(CheckList.objects.values('validation_status').annotate(total=Count('id')))
+    par_machine = list(CheckList.objects.values('machine').annotate(total=Count('id')))
+
+    context = {
+        'total_fiches': total_fiches,
+        'par_statut': json.dumps(par_statut),
+        'par_machine': json.dumps(par_machine),
+    }
+    return render(request, 'dashboard.html', context)

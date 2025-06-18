@@ -1,10 +1,158 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Dashboard</title>
+    <meta charset="UTF-8">
+    <title>Tableau de Bord</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts + Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #2C3E50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            padding: 30px 40px;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        canvas {
+            max-width: 600px;
+            height: auto;
+            margin: 0 auto;
+            display: block;
+        }
+        canvas.large-canvas {
+            max-width: 800px;
+            height: 400px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Bienvenue {{ user.username }}</h2>
-    <a href="{% url 'logout' %}">Se déconnecter</a>
+
+<header>
+    <h1><i class="fas fa-chart-pie"></i> Tableau de Bord</h1>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <h2><i class="fas fa-database"></i> Total de fiches</h2>
+        <p><strong>{{ total_fiches }}</strong></p>
+    </div>
+
+    <div class="card">
+        <h2><i class="fas fa-tasks"></i> Fiches par statut</h2>
+        <canvas id="statutChart"></canvas>
+    </div>
+
+    <div class="card">
+        <h2><i class="fas fa-cogs"></i> Fiches par machine</h2>
+        <canvas id="machineChart" class="large-canvas"></canvas>
+    </div>
+
+</div>
+
+<script>
+    // Données depuis Django (via JSON)
+    const parStatut = JSON.parse('{{ par_statut|safe|escapejs }}'.replace(/&quot;/g, '"'));
+    const parMachine = JSON.parse('{{ par_machine|safe|escapejs }}'.replace(/&quot;/g, '"'));
+
+    const statutLabels = parStatut.map(item => item.validation_status);
+    const statutData = parStatut.map(item => item.total);
+
+    const machineLabels = parMachine.map(item => item.machine);
+    const machineData = parMachine.map(item => item.total);
+
+    // Graphique Statuts (Pie)
+    new Chart(document.getElementById('statutChart'), {
+        type: 'pie',
+        data: {
+            labels: statutLabels,
+            datasets: [{
+                data: statutData,
+                backgroundColor: ['#4CAF50', '#F44336', '#FFC107', '#2196F3', '#9C27B0']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // Graphique Machine (Bar)
+    new Chart(document.getElementById('machineChart'), {
+        type: 'bar',
+        data: {
+            labels: machineLabels,
+            datasets: [{
+                label: 'Nombre de fiches',
+                data: machineData,
+                backgroundColor: '#3498DB',
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Répartition des fiches par machine',
+                    font: {
+                        size: 18
+                    }
+                },
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        font: {
+                            size: 14
+                        },
+                        color: '#333'
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1,
+                        font: {
+                            size: 14
+                        },
+                        color: '#333'
+                    }
+                }
+            }
+        }
+    });
+</script>
+
 </body>
 </html>
