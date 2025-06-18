@@ -1,0 +1,452 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Check-list démarrage Komax</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(145deg, #f0f2f5, #ffffff);
+            padding-top: 80px;
+        }
+        .form-section {
+    margin-bottom: 30px;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.form-section h3 {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    color: #444;
+}
+
+.form-control {
+    width: 100%;
+    padding: 6px 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+        .verif-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.verif-grid label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+    color: #333;
+}
+
+.verif-grid input,
+.verif-grid select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+        .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.info-grid label {
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+    color: #333;
+}
+
+.info-grid input,
+.info-grid select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.full-width {
+    grid-column: span 2;
+}
+
+@media (max-width: 768px) {
+    .full-width {
+        grid-column: span 1;
+    }
+}
+
+
+        header {
+            background-color: #4f75ad;
+            color: white;
+            padding: 20px 30px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+        }
+
+        header h1 i {
+            margin-right: 10px;
+            color: #ffcc00;
+        }
+
+        .user-info {
+            font-size: 16px;
+        }
+
+        .user-info span {
+            margin-right: 15px;
+        }
+
+        .form-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px 30px;
+            margin: 30px auto;
+            max-width: 1200px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .form-section:hover {
+            transform: translateY(-4px);
+        }
+
+        .form-section h2 {
+            color: #467ac8;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            font-size: 22px;
+            border-bottom: 2px solid #5077b0;
+            padding-bottom: 10px;
+        }
+
+        .form-section h2 i {
+            margin-right: 10px;
+            color: #ff6600;
+        }
+
+        label {
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+        input, select {
+            margin-bottom: 15px;
+        }
+
+        .form-actions {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .btn {
+            margin: 10px;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #5a86c7;
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #849ac0;
+        }
+
+        .btn-secondary {
+            background-color: #f8f9fa;
+            color: black;
+            border: 1px solid #ced4da;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e2e6ea;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 14px;
+            margin-top: 50px;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1><i class="fa-solid fa-clipboard-check"></i> Check-list Komax</h1>
+    <div class="user-info">
+        <span>Bienvenue, {{ user.username }}</span>
+        <a href="{% url 'logout' %}" class="btn btn-secondary btn-sm"><i class="fa-solid fa-sign-out-alt"></i> Déconnexion</a>
+    </div>
+</header>
+
+<form action="{% url 'checklist' %}" method="post">
+    {% csrf_token %}
+
+    <!-- Informations Générales -->
+   <div class="form-section">
+    <h2><i class="fa-solid fa-user"></i> Informations Générales</h2>
+    <div class="info-grid">
+        <div>
+            <label for="machine"><i class="fa-solid fa-id-badge"></i> Machine</label>
+            <select name="machine" id="machine" class="form-select">
+                <option value="Komax01">Komax01</option>
+                <option value="Komax02">Komax02</option>
+                <option value="Komax03">Komax03</option>
+                <option value="Komax04">Komax04</option>
+                <option value="Komax05">Komax05</option>
+            </select>
+        </div>
+        <div>
+            <label for="matricule"><i class="fa-solid fa-gears"></i> Matricule</label>
+            <input type="text" name="matricule" id="matricule" class="form-control" required>
+        </div>
+        <div>
+            <label for="date"><i class="fa-solid fa-calendar-days"></i> Date</label>
+            <input type="date" name="date" id="date" class="form-control" required>
+        </div>
+        <div>
+            <label for="sf" ><i class="fa-solid fa-barcode"></i> SF</label>
+            <input type="text" name="sf" class="form-control" pattern="^SF.*" title="Le nom doit commencer par SF" id="sf" class="form-control" required>
+        </div>
+        <div>
+            <label for="mp"><i class="fa-solid fa-box"></i> MP</label>
+            <input type="text" name="mp" id="mp" class="form-control" required>
+        </div>
+        <div>
+            <label for="equipe"><i class="fa-solid fa-people-group"></i> Équipe</label>
+            <select name="equipe" id="equipe" class="form-select">
+                <option value="Equipe01">Equipe01</option>
+                <option value="Equipe02">Equipe02</option>
+                <option value="Equipe03">Equipe03</option>
+                <option value="Equipe04">Equipe04</option>
+            </select>
+        </div>
+        <div class="full-width">
+            <label for="motif"><i class="fa-solid fa-clipboard-question"></i> Motif</label>
+            <select name="motif" id="motif" class="form-select">
+                <option value="Démarrage série">Démarrage série</option>
+                <option value="Changement de référence">Changement de référence</option>
+                <option value="Intervention maintenance">Intervention maintenance</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+    <!-- Longueurs Fils -->
+    <div class="form-section">
+    <h2><i class="fa-solid fa-ruler"></i> Longueurs Fils</h2>
+    <div class="grid-2">
+        <!-- Fil 1 -->
+        <div>
+            <h3>Fil 1</h3>
+            <label>Nom fil 1</label>
+            <input type="text" name="fil1_nom" class="form-control" required>
+
+            <label>L1 Théorique</label>
+            <input type="number" step="any" name="fil1_L1_theorique" class="form-control" required>
+
+            <label>L1 Mesurée</label>
+            <input type="number" name="fil1_L1_mesuree" class="form-control" required>
+        </div>
+
+        <!-- Fil 2 -->
+        <div>
+            <h3>Fil 2</h3>
+            <label>Nom fil 2</label>
+            <input type="text" name="fil2_nom" class="form-control" required>
+
+            <label>L2 Théorique</label>
+            <input type="number" name="fil2_L2_theorique" class="form-control" required>
+
+            <label>L2 Mesurée</label>
+            <input type="number" name="fil2_L2_mesuree" class="form-control" required>
+        </div>
+    </div>
+</div>
+
+<!-- CMP 1 & 2 Section -->
+<div class="form-section">
+    <h2><i class="fa-solid fa-wrench"></i> CMP 1 & 2</h2>
+    <div class="grid-2">
+        <!-- CMP 1 -->
+        <div>
+            <h3>CMP 1</h3>
+            <label>N°</label>
+            <input type="text" name="cmp1_num" class="form-control" required>
+
+            <label>Miniapplicateur</label>
+            <input type="number" name="miniapp1" class="form-control" required>
+
+            <label>HC min</label>
+            <input type="number" name="cmp1_hc_min" class="form-control" required>
+
+            <label>HC max</label>
+            <input type="number" name="cmp1_hc_max" class="form-control" required>
+
+            <label>HC Mesurée</label>
+            <input type="number" name="cmp1_hc_mesuree" class="form-control" required>
+
+            <label>HR min</label>
+            <input type="number" name="cmp1_hr_min" class="form-control" required>
+
+            <label>HR max</label>
+            <input type="number" name="cmp1_hr_max" class="form-control" required>
+
+            <label>HR Mesurée</label>
+            <input type="number" name="cmp1_hr_mesuree" class="form-control" required>
+
+            <label>TR min</label>
+            <input type="number" name="cmp1_tr_min" class="form-control" required>
+
+            <label>TR Mesurée</label>
+            <input type="number" name="cmp1_tr_mesuree" class="form-control" required>
+        </div>
+
+        <!-- CMP 2 -->
+        <div>
+            <h3>CMP 2</h3>
+            <label>N°</label>
+            <input type="text" name="cmp2_num" class="form-control" required>
+
+            <label>Miniapplicateur</label>
+            <input type="number" name="miniapp2" class="form-control" required>
+
+            <label>HC min</label>
+            <input type="number" name="cmp2_hc_min" class="form-control" required>
+
+            <label>HC max</label>
+            <input type="number" name="cmp2_hc_max" class="form-control" required>
+
+            <label>HC Mesurée</label>
+            <input type="number"  name="cmp2_hc_mesuree" class="form-control" required>
+
+            <label>HR min</label>
+            <input type="number" name="cmp2_hr_min" class="form-control" required>
+
+            <label>HR max</label>
+            <input type="number" name="cmp2_hr_max" class="form-control" required>
+
+            <label>HR Mesurée</label>
+            <input type="number" name="cmp2_hr_mesuree" class="form-control" required>
+
+            <label>TR min</label>
+            <input type="number" name="cmp2_tr_min" class="form-control" required>
+
+            <label>TR Mesurée</label>
+            <input type="number" name="cmp2_tr_mesuree" class="form-control" required>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Vérifications Finales -->
+    <div class="form-section">
+    <h2><i class="fa-solid fa-clipboard-list"></i> Vérifications Finales</h2>
+    <div class="verif-grid">
+        <div>
+            <label for="aspect_bobines"><i class="fa-solid fa-eye"></i> Aspect bobines</label>
+            <select name="aspect_bobines" id="aspect_bobines" class="form-select">
+                <option value="OK">OK</option>
+                <option value="NOK">NOK</option>
+            </select>
+        </div>
+        <div>
+            <label for="aspect"><i class="fa-solid fa-eye-dropper"></i> Aspect</label>
+            <select name="aspect" id="aspect" class="form-select">
+                <option value="OK">OK</option>
+                <option value="NOK">NOK</option>
+            </select>
+        </div>
+        <div>
+            <label for="verification_blo"><i class="fa-solid fa-check-double"></i> Vérification BLO</label>
+            <select name="verification_blo" id="verification_blo" class="form-select">
+                <option value="OK">OK</option>
+                <option value="NOK">NOK</option>
+            </select>
+        </div>
+        <div>
+            <label for="controle_bobines"><i class="fa-solid fa-magnifying-glass"></i> Contrôle bobines</label>
+            <input type="text" name="controle_bobines" id="controle_bobines" class="form-control" required>
+        </div>
+        <div>
+            <label for="pression_entree"><i class="fa-solid fa-gauge-high"></i> Pression d’entrée (> 6 bars)</label>
+            <input type="number" name="pression_entree" id="pression_entree" class="form-control" required>
+        </div>
+        <div>
+            <label for="pression_courroie"><i class="fa-solid fa-compress-arrows-alt"></i> Pression courroie (= 4 ± 0.5 bars)</label>
+            <input type="number" name="pression_courroie" id="pression_courroie" class="form-control" required>
+        </div>
+    </div>
+</div>
+
+    <!-- Boutons -->
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Enregistrer</button>
+        <button type="reset" class="btn btn-secondary"><i class="fa-solid fa-rotate-left"></i> Réinitialiser</button>
+    </div>
+</form>
+
+<footer>
+    &copy; 2025 Komax | Application interne - Tous droits réservés
+</footer>
+
+</body>
+</html>

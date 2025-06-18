@@ -1,0 +1,202 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Choix de rôle - ONETECH</title>
+
+    <!-- Font & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #003366 0%, #00bcd4 100%);
+            position: relative;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+            color: #fff;
+        }
+
+        /* Filigrane ONETECH en arrière-plan */
+        .bg-watermark {
+            background: url("{% static 'images/onetech.png' %}") no-repeat center center;
+            background-size: 350px;
+            opacity: 0.07;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 2;
+        }
+
+        header img {
+            height: 100px;
+            filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #e0f7fa;
+            margin-bottom: 50px;
+            z-index: 2;
+            position: relative;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.4);
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        h1 span.onetech {
+            background: linear-gradient(90deg, #ff6600, #0047ab);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            font-size: 64px;
+            letter-spacing: 4px;
+            display: block;
+            margin-bottom: 20px;
+            user-select: none;
+        }
+
+        .container {
+            display: flex;
+            gap: 60px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            align-items: center;
+            z-index: 2;
+            position: relative;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .role-box {
+            background-color: rgba(0, 60, 102, 0.85); /* bleu foncé transparent */
+            border-radius: 20px;
+            padding: 30px;
+            width: 220px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .role-box:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 15px 30px rgba(0, 188, 212, 0.7);
+            background-color: rgba(0, 188, 212, 0.9); /* bleu clair au hover */
+            cursor: pointer;
+        }
+
+        .role-box img {
+            width: 90px;
+            height: 90px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5));
+        }
+
+        .role-box a {
+            text-decoration: none;
+            color: #e0f7fa;
+            font-size: 22px;
+            font-weight: 700;
+            display: block;
+            transition: color 0.3s ease;
+        }
+
+        .role-box a:hover {
+            color: #003366;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 15px;
+            font-size: 14px;
+            color: #b2ebf2;
+            z-index: 2;
+            width: 100%;
+            text-align: center;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                flex-direction: column;
+                gap: 30px;
+                padding: 30px;
+            }
+
+            header img {
+                height: 80px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            h1 span.onetech {
+                font-size: 48px;
+                letter-spacing: 3px;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Filigrane -->
+    <div class="bg-watermark"></div>
+
+    <header>
+      <!--  <img src="{% static 'images/onetech.png' %}" alt="Logo"> -->
+    </header>
+
+    <h1>
+        <span class="onetech">ONETECH</span>
+        Bienvenue, choisissez votre rôle :
+    </h1>
+
+    <div class="container">
+        <div class="role-box">
+            <a href="{% url 'login' %}">
+                <img src="{% static 'images/saisisseur.png' %}" alt="Saisisseur">
+                <div>Saisisseur</div>
+            </a>
+        </div>
+        
+        <div class="role-box">
+            <a href="{% url 'loginn' %}">
+                <img src="{% static 'images/validateur.png' %}" alt="Validateur">
+                <div>Validateur</div>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 OneTech | Tous droits réservés
+    </footer>
+
+</body>
+</html>

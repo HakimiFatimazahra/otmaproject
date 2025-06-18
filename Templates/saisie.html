@@ -1,0 +1,6 @@
+<h2>Formulaire de saisie</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Envoyer</button>
+</form>

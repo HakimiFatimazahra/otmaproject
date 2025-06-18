@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Checklists à valider</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f7f9fc;
+            margin: 0;
+            padding: 100px 20px 20px;
+        }
+
+        header {
+            background-color: #4f75ad;
+            color: white;
+            padding: 20px 30px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+        }
+
+        header h1 i {
+            margin-right: 10px;
+            color: #ffcc00;
+        }
+
+        .user-info {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .user-info a {
+            background-color: #e74c3c;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .user-info a:hover {
+            background-color: #c0392b;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            margin-top: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            min-width: 1200px;
+        }
+
+        th, td {
+            border: 1px solid #e0e0e0;
+            padding: 8px 12px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        th {
+            background-color: #34495e;
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f6fa;
+        }
+
+        select {
+            padding: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            display: block;
+            margin: 20px auto 0;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #219150;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 20px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1><i class="fa-solid fa-clipboard-check"></i> Validation des Check-lists Komax</h1>
+    <div class="user-info">
+        <span>Bienvenue, {{ user.username }}</span>
+        <a href="{% url 'logout' %}"><i class="fa-solid fa-sign-out-alt"></i> Déconnexion</a>
+    </div>
+</header>
+
+
+<h2>📝 Modifier les Checklists en attente</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Matricule</th>
+                    <th>Machine</th>
+                    <th>Date</th>
+                    <th>Équipe</th>
+                    <th>Motif</th>
+                    <th>SF</th>
+                    <th>MP</th>
+                    
+                    <th>Nom fil 1</th>
+                    <th>L1 Théorique</th>
+                    <th>L1 Mesurée</th>
+                    <th>Nom fil 2</th>
+                    <th>L2 Théorique</th>
+                    <th>L2 Mesurée</th>
+                    
+                    <th>CMP 1 N°</th>
+                    <th>Miniapplicateur 1</th>
+                    <th>HC min</th>
+                    <th>HC max</th>
+                    <th>HC Mesurée</th>
+                    <th>HR min</th>
+                    <th>HR max</th>
+                    <th>HR Mesurée</th>
+                    <th>TR min</th>
+                    <th>TR Mesurée</th>
+
+                    <th>CMP 2 N°</th>
+                    <th>Miniapplicateur 2</th>
+                    <th>HC2 min</th>
+                    <th>HC2 max</th>
+                    <th>HC2 Mesurée</th>
+                    <th>HR2 min</th>
+                    <th>HR2 max</th>
+                    <th>HR2 Mesurée</th>
+                    <th>TR2 min</th>
+                    <th>TR2 Mesurée</th>
+                    
+                    
+                    <th>Contrôle bobines</th>
+                    <th>Aspect bobines</th>
+                    <th>Vérification BLO</th>
+                    <th>Pression entrée</th>
+                    <th>Pression courroie</th>
+                    <th>Validation</th>
+                    <th>Modifier</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in checklists %}
+                <tr>
+                    <td>{{ item.matricule }}</td>
+                    <td>{{ item.machine }}</td>
+                    <td>{{ item.date }}</td>
+                    <td>{{ item.equipe }}</td>
+                    <td>{{ item.motif }}</td>
+                    <td>{{ item.sf }}</td>
+                    <td>{{ item.mp }}</td>
+                   
+                    <td>{{ item.fil1_nom }}</td>
+                    <td>{{ item.fil1_L1_theorique }}</td>
+                    <td>{{ item.fil1_L1_mesuree }}</td>
+                    <td>{{ item.fil2_nom }}</td>
+                    <td>{{ item.fil2_L2_theorique }}</td>
+                    <td>{{ item.fil2_L2_mesuree }}</td>
+
+                    <td>{{ item.cmp1_num }}</td>
+                    <td>{{ item.miniapp1 }}</td>
+                    <td>{{ item.cmp1_hc_min }}</td>
+                    <td>{{ item.cmp1_hc_max }}</td>
+                    <td>{{ item.cmp1_hc_mesuree }}</td>
+                    <td>{{ item.cmp1_hr_min }}</td>
+                    <td>{{ item.cmp1_hr_max }}</td>
+                    <td>{{ item.cmp1_hr_mesuree }}</td>
+                    <td>{{ item.cmp1_tr_min }}</td>
+                    <td>{{ item.cmp1_tr_mesuree }}</td>
+
+                    <td>{{ item.cmp2_num }}</td>
+                    <td>{{ item.miniapp2 }}</td>
+                    <td>{{ item.cmp2_hc_min }}</td>
+                    <td>{{ item.cmp2_hc_max }}</td>
+                    <td>{{ item.cmp2_hc_mesuree }}</td>
+                    <td>{{ item.cmp2_hr_min }}</td>
+                    <td>{{ item.cmp2_hr_max }}</td>
+                    <td>{{ item.cmp2_hr_mesuree }}</td>
+                    <td>{{ item.cmp2_tr_min }}</td>
+                    <td>{{ item.cmp2_tr_mesuree }}</td>
+                    
+                    
+                    
+                    <td>{{ item.controle_bobines }}</td>
+                    <td>{{ item.aspect }}</td>
+                    <td>{{ item.verification_blo }}</td>
+                    <td>{{ item.pression_entree }}</td>
+                    <td>{{ item.pression_courroie }}</td>
+                    <td>{{ item.validation_status }}</td>
+                    <td>
+                        <select name="status_{{ item.id }}">
+                            <option value="En attente" {% if item.validation_status == 'En attente' %}selected{% endif %}>🕓 En attente</option>
+                            <option value="Valide" {% if item.validation_status == 'Valide' %}selected{% endif %}>✅ Valide</option>
+                            <option value="Non Valide" {% if item.validation_status == 'Non Valide' %}selected{% endif %}>❌ Non Valide</option>
+                        </select>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="45">⚠️ Aucune checklist à valider.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit">💾 Enregistrer les modifications</button>
+</form>
+<form method="get" style="margin-bottom: 20px;">
+    <label for="filtre_statut">Filtrer par statut :</label>
+    <select name="filtre_statut" onchange="this.form.submit()">
+        <option value="">Tous</option>
+        <option value="En attente" {% if filtre_statut == "En attente" %}selected{% endif %}>🕓 En attente</option>
+        <option value="Valide" {% if filtre_statut == "Valide" %}selected{% endif %}>✅ Valide</option>
+        <option value="Non Valide" {% if filtre_statut == "Non Valide" %}selected{% endif %}>❌ Non Valide</option>
+    </select>
+</form>
+
+<form method="get" style="margin-bottom: 20px; text-align: center;">
+    <input type="text" name="matricule" placeholder="Rechercher par matricule" value="{{ matricule }}" style="padding: 8px; border-radius: 6px; border: 1px solid #ccc;">
+    <input type="text" name="sf" placeholder="Rechercher par SF" value="{{ sf }}" style="padding: 8px; border-radius: 6px; border: 1px solid #ccc;">
+    <button type="submit" style="padding: 8px 16px; border: none; background-color: #3498db; color: white; border-radius: 6px; cursor: pointer;">🔍 Rechercher</button>
+</form>
+
+<p>{{ checklists|length }} checklists chargées.</p>
+
+</body>
+</html>

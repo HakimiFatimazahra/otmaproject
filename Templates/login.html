@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <title>Connexion - Saisisseur</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #e7f0ee, #6872a0);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Filigrane léger ONETECH en fond */
+        body::before {
+            content: "ONETECH";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 10rem;
+            font-weight: 900;
+            color: rgba(255, 102, 0, 0.07); /* orange très clair */
+            z-index: 0;
+            user-select: none;
+            pointer-events: none;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            padding: 40px 50px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            width: 380px;
+            position: relative;
+            z-index: 2;
+            border: 3px solid transparent;
+            background-clip: padding-box;
+            border-image-slice: 1;
+            border-image-source: linear-gradient(45deg, #ff6600, #0047ab);
+            transition: border-color 0.4s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            animation: pulse 6s ease-in-out infinite;
+        }
+
+        .login-container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            }
+            50% {
+                transform: scale(1.02);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            }
+        }
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #0047ab;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            padding: 10px 12px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1.5px solid #ccc;
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #ff6600; /* orange */
+            box-shadow: 0 0 8px rgba(255, 102, 0, 0.6);
+        }
+
+        button {
+            padding: 12px;
+            background: linear-gradient(45deg, #ff6600, #0047ab);
+            color: white;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background 0.4s ease, box-shadow 0.3s ease;
+            box-shadow: 0 6px 15px rgba(255, 102, 0, 0.6);
+        }
+
+        button:hover {
+            background: linear-gradient(45deg, #0047ab, #ff6600);
+            box-shadow: 0 8px 20px rgba(0, 71, 171, 0.7);
+        }
+
+        .error-message {
+            color: #d9534f;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 420px) {
+            .login-container {
+                width: 90%;
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Page de connexion Saisisseur</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {% if error %}
+            <div class="error-message">{{ error }}</div>
+            {% endif %}
+            <label for="username">Nom d'utilisateur :</label>
+            <input type="text" id="username" name="username" required autofocus />
+            <label for="password">Mot de passe :</label>
+            <input type="password" id="password" name="password" required />
+            <button type="submit">Se connecter</button>
+        </form>
+    </div>
+</body>
+</html>

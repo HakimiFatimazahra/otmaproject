@@ -1,0 +1,6 @@
+<h2>Données à valider</h2>
+{% for item in checklist_items %}
+  <p>{{ item.nom }} - {{ item.status }}</p>
+  <a href="{% url 'valider_item' item.id %}">Valider</a>
+{% endfor %}
+
