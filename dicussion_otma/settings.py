@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-t!xpd8t#1(=-bqqv&n@4%%qvjeti12&$_2ire+)d3)krjo$^bm
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-DEBUG = False  # très important pour la production
+DEBUG = True # très important pour la production
 
 
 # Application definition
@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'dicussion_otma.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'otma_data_basee_django',
+        'NAME': 'base-de-donnees_per',
         'USER':'postgres',
         'PASSWORD':'OneTechhakimi',
         'HOST':'localhost',
@@ -140,8 +140,8 @@ LOGOUT_REDIRECT_URL = '/accounts/login/'  # où renvoyer après déconnexion
 
 # settings.py
 LOGIN_REDIRECT_URL = '/redirect_user/'
-import django_heroku
-import dj_database_url
+#import django_heroku
+#import dj_database_url
 import os
 from pathlib import Path
 
@@ -150,6 +150,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Active la config Heroku
-django_heroku.settings(locals())
+#django_heroku.settings(locals())
+
 
 

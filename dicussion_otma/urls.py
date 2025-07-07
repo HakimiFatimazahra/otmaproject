@@ -40,5 +40,9 @@ urlpatterns = [
     path('logout/', omta_views.logout_view, name='logout'),
     path('dashboard/', omta_views.dashboard_view, name='dashboard'),
 
+    path('historique/', omta_views.historique_checklists, name='historique'),
+    #path('historique/export/', omta_views.export_excel, name='export_excel'),
+
+
     #path('changer_statut/<int:fiche_id>/', omta_views.changer_statut, name='changer_statut'),
 ]

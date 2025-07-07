@@ -3,189 +3,151 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Choix de rôle - ONETECH</title>
-
-    <!-- Font & Icons -->
+    <title>Choix de Rôle - CheckList App</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
     <style>
-        * {
-            box-sizing: border-box;
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f2f5f9;
+            display: flex;
+            height: 100vh;
         }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #003366 0%, #00bcd4 100%);
-            position: relative;
-            margin: 0;
+        .left-section {
+            width: 50%;
+            background: url("{% static 'images/onetech_DR-scaled.jpg' %}") no-repeat center center;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.5);
+            background-blend-mode: overlay;
+        }
+
+        .left-section h1 {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .left-section p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .left-section ul {
+            list-style: none;
             padding: 0;
-            height: 100vh;
+        }
+
+        .left-section ul li {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .left-section ul li::before {
+            content: "✔";
+            margin-right: 10px;
+            color: #00e676;
+        }
+
+        .right-section {
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+        }
+
+        .role-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            z-index: 1;
-            color: #fff;
         }
 
-        /* Filigrane ONETECH en arrière-plan */
-        
-
-        header {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 2;
-        }
-
-        header img {
-            height: 100px;
-            filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
-        }
-
-        h1 {
-            font-size: 32px;
-            color: #e0f7fa;
-            margin-bottom: 50px;
-            z-index: 2;
-            position: relative;
-            text-shadow: 1px 1px 5px rgba(0,0,0,0.4);
-            text-align: center;
-            line-height: 1.2;
-        }
-
-        h1 span.onetech {
-            background: linear-gradient(90deg, #ff6600, #0047ab);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 900;
-            font-size: 64px;
-            letter-spacing: 4px;
-            display: block;
-            margin-bottom: 20px;
-            user-select: none;
-        }
-
-        .container {
-            display: flex;
-            gap: 60px;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 50px;
-            border-radius: 25px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            align-items: center;
-            z-index: 2;
-            position: relative;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+        .role-container h2 {
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 28px;
         }
 
         .role-box {
-            background-color: rgba(0, 60, 102, 0.85); /* bleu foncé transparent */
-            border-radius: 20px;
-            padding: 30px;
-            width: 220px;
+            width: 260px;
+            background-color: #00796b;
+            color: white;
             text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
         }
 
         .role-box:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 15px 30px rgba(0, 188, 212, 0.7);
-            background-color: rgba(0, 188, 212, 0.9); /* bleu clair au hover */
-            cursor: pointer;
-        }
-
-        .role-box img {
-            width: 90px;
-            height: 90px;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5));
+            background-color: #004d40;
         }
 
         .role-box a {
+            color: white;
             text-decoration: none;
-            color: #e0f7fa;
-            font-size: 22px;
-            font-weight: 700;
             display: block;
-            transition: color 0.3s ease;
         }
 
-        .role-box a:hover {
-            color: #003366;
-        }
-
-        footer {
-            position: absolute;
-            bottom: 15px;
-            font-size: 14px;
-            color: #b2ebf2;
-            z-index: 2;
-            width: 100%;
-            text-align: center;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-        }
-
-        @media (max-width: 700px) {
-            .container {
+        @media (max-width: 900px) {
+            body {
                 flex-direction: column;
-                gap: 30px;
+            }
+
+            .left-section, .right-section {
+                width: 100%;
+            }
+
+            .left-section {
+                height: 250px;
                 padding: 30px;
+                text-align: center;
             }
 
-            header img {
-                height: 80px;
+            .left-section h1 {
+                font-size: 32px;
             }
 
-            h1 {
-                font-size: 24px;
-            }
-
-            h1 span.onetech {
-                font-size: 48px;
-                letter-spacing: 3px;
-                margin-bottom: 15px;
+            .role-box {
+                width: 80%;
             }
         }
     </style>
 </head>
-
 <body>
 
-    <!-- Filigrane -->
-    <div class="bg-watermark"></div>
+<div class="left-section">
+    <h1>CheckList App</h1>
+    <p>Optimisez le contrôle qualité dans votre usine avec simplicité.</p>
+    <ul>
+        <li>Saisie rapide des données de production</li>
+        <li>Validation et suivi des opérations</li>
+        <li>Visualisation des statistiques de qualité</li>
+        <li>Export Excel des rapports</li>
+    </ul>
+</div>
 
-    <header>
-      <!--  <img src="{% static 'images/onetech.png' %}" alt="Logo"> -->
-    </header>
-
-    <h1>
-        <span class="onetech">ONETECH</span>
-        Bienvenue, choisissez votre rôle :
-    </h1>
-
-    <div class="container">
+<div class="right-section">
+    <div class="role-container">
+        <h1>Bienvenue sur ONETECH </h1>
+        <h2>Choisissez votre rôle</h2>
         <div class="role-box">
-            <a href="{% url 'login' %}">
-                <img src="{% static 'images/saisisseur.png' %}" alt="Saisisseur">
-                <div>Saisisseur</div>
-            </a>
+            <a href="{% url 'login' %}">👤 Saisisseur</a>
         </div>
-        
         <div class="role-box">
-            <a href="{% url 'loginn' %}">
-                <img src="{% static 'images/validateur.png' %}" alt="Validateur">
-                <div>Validateur</div>
-            </a>
+            <a href="{% url 'loginn' %}">✅ Validateur</a>
         </div>
     </div>
-
-    <footer>
-        &copy; 2025 OneTech | Tous droits réservés
-    </footer>
+</div>
 
 </body>
 </html>

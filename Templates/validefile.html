@@ -134,6 +134,34 @@
             margin-top: 20px;
             color: #555;
         }
+
+        /* Couleurs selon le statut */
+        .status-valide {
+            background-color: #d4edda !important;
+            color: #155724;
+            font-weight: bold;
+            border-left: 5px solid #28a745;
+        }
+
+        .status-non-valide {
+            background-color: #f8d7da !important;
+            color: #721c24;
+            font-weight: bold;
+            border-left: 5px solid #dc3545;
+            animation: blink 1s linear infinite;
+        }
+
+        .status-en-attente {
+            background-color: #fff3cd !important;
+            color: #856404;
+            font-weight: bold;
+            border-left: 5px solid #ffc107;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
     </style>
 </head>
 <body>
@@ -146,7 +174,6 @@
     </div>
 </header>
 
-
 <h2>📝 Modifier les Checklists en attente</h2>
 
 <form method="POST">
@@ -155,101 +182,41 @@
         <table>
             <thead>
                 <tr>
-                    <th>Matricule</th>
+                    <th>Matricule_Saisie</th>
                     <th>Machine</th>
                     <th>Date</th>
                     <th>Équipe</th>
                     <th>Motif</th>
                     <th>SF</th>
                     <th>MP</th>
-                    
                     <th>Nom fil 1</th>
                     <th>L1 Théorique</th>
                     <th>L1 Mesurée</th>
                     <th>Nom fil 2</th>
                     <th>L2 Théorique</th>
                     <th>L2 Mesurée</th>
-                    
-                    <th>CMP 1 N°</th>
-                    <th>Miniapplicateur 1</th>
-                    <th>HC min</th>
-                    <th>HC max</th>
-                    <th>HC Mesurée</th>
-                    <th>HR min</th>
-                    <th>HR max</th>
-                    <th>HR Mesurée</th>
-                    <th>TR min</th>
-                    <th>TR Mesurée</th>
-
-                    <th>CMP 2 N°</th>
-                    <th>Miniapplicateur 2</th>
-                    <th>HC2 min</th>
-                    <th>HC2 max</th>
-                    <th>HC2 Mesurée</th>
-                    <th>HR2 min</th>
-                    <th>HR2 max</th>
-                    <th>HR2 Mesurée</th>
-                    <th>TR2 min</th>
-                    <th>TR2 Mesurée</th>
-                    
-                    
-                    <th>Contrôle bobines</th>
-                    <th>Aspect bobines</th>
-                    <th>Vérification BLO</th>
-                    <th>Pression entrée</th>
-                    <th>Pression courroie</th>
                     <th>Validation</th>
                     <th>Modifier</th>
+                    <th>Matricule_Valider</th>
                 </tr>
             </thead>
             <tbody>
                 {% for item in checklists %}
-                <tr>
-                    <td>{{ item.matricule }}</td>
+                <tr class="{% if item.validation_status == 'Valide' %}status-valide{% elif item.validation_status == 'Non Valide' %}status-non-valide{% elif item.validation_status == 'En attente' %}status-en-attente{% endif %}">
+                    <td>{{ item.matricule_Saisie }}</td>
                     <td>{{ item.machine }}</td>
                     <td>{{ item.date }}</td>
                     <td>{{ item.equipe }}</td>
                     <td>{{ item.motif }}</td>
                     <td>{{ item.sf }}</td>
                     <td>{{ item.mp }}</td>
-                   
                     <td>{{ item.fil1_nom }}</td>
                     <td>{{ item.fil1_L1_theorique }}</td>
                     <td>{{ item.fil1_L1_mesuree }}</td>
                     <td>{{ item.fil2_nom }}</td>
                     <td>{{ item.fil2_L2_theorique }}</td>
                     <td>{{ item.fil2_L2_mesuree }}</td>
-
-                    <td>{{ item.cmp1_num }}</td>
-                    <td>{{ item.miniapp1 }}</td>
-                    <td>{{ item.cmp1_hc_min }}</td>
-                    <td>{{ item.cmp1_hc_max }}</td>
-                    <td>{{ item.cmp1_hc_mesuree }}</td>
-                    <td>{{ item.cmp1_hr_min }}</td>
-                    <td>{{ item.cmp1_hr_max }}</td>
-                    <td>{{ item.cmp1_hr_mesuree }}</td>
-                    <td>{{ item.cmp1_tr_min }}</td>
-                    <td>{{ item.cmp1_tr_mesuree }}</td>
-
-                    <td>{{ item.cmp2_num }}</td>
-                    <td>{{ item.miniapp2 }}</td>
-                    <td>{{ item.cmp2_hc_min }}</td>
-                    <td>{{ item.cmp2_hc_max }}</td>
-                    <td>{{ item.cmp2_hc_mesuree }}</td>
-                    <td>{{ item.cmp2_hr_min }}</td>
-                    <td>{{ item.cmp2_hr_max }}</td>
-                    <td>{{ item.cmp2_hr_mesuree }}</td>
-                    <td>{{ item.cmp2_tr_min }}</td>
-                    <td>{{ item.cmp2_tr_mesuree }}</td>
-                    
-                    
-                    
-                    <td>{{ item.controle_bobines }}</td>
-                    <td>{{ item.aspect }}</td>
-                    <td>{{ item.verification_blo }}</td>
-                    <td>{{ item.pression_entree }}</td>
-                    <td>{{ item.pression_courroie }}</td>
-                    <td>{{ item.validation_status }}</td>
+                    <td>{{ item.matricule_Valider }}</td>
                     <td>
                         <select name="status_{{ item.id }}">
                             <option value="En attente" {% if item.validation_status == 'En attente' %}selected{% endif %}>🕓 En attente</option>
@@ -259,33 +226,13 @@
                     </td>
                 </tr>
                 {% empty %}
-                <tr>
-                    <td colspan="45">⚠️ Aucune checklist à valider.</td>
-                </tr>
+                <tr><td colspan="15">⚠️ Aucune checklist à valider.</td></tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-
     <button type="submit">💾 Enregistrer les modifications</button>
 </form>
-<form method="get" style="margin-bottom: 20px;">
-    <label for="filtre_statut">Filtrer par statut :</label>
-    <select name="filtre_statut" onchange="this.form.submit()">
-        <option value="">Tous</option>
-        <option value="En attente" {% if filtre_statut == "En attente" %}selected{% endif %}>🕓 En attente</option>
-        <option value="Valide" {% if filtre_statut == "Valide" %}selected{% endif %}>✅ Valide</option>
-        <option value="Non Valide" {% if filtre_statut == "Non Valide" %}selected{% endif %}>❌ Non Valide</option>
-    </select>
-</form>
-
-<form method="get" style="margin-bottom: 20px; text-align: center;">
-    <input type="text" name="matricule" placeholder="Rechercher par matricule" value="{{ matricule }}" style="padding: 8px; border-radius: 6px; border: 1px solid #ccc;">
-    <input type="text" name="sf" placeholder="Rechercher par SF" value="{{ sf }}" style="padding: 8px; border-radius: 6px; border: 1px solid #ccc;">
-    <button type="submit" style="padding: 8px 16px; border: none; background-color: #3498db; color: white; border-radius: 6px; cursor: pointer;">🔍 Rechercher</button>
-</form>
-
-<p>{{ checklists|length }} checklists chargées.</p>
 
 </body>
 </html>

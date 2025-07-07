@@ -240,6 +240,7 @@
 <form action="{% url 'checklist' %}" method="post">
     {% csrf_token %}
 
+
     <!-- Informations Générales -->
    <div class="form-section">
     <h2><i class="fa-solid fa-user"></i> Informations Générales</h2>
@@ -254,10 +255,7 @@
                 <option value="Komax05">Komax05</option>
             </select>
         </div>
-        <div>
-            <label for="matricule"><i class="fa-solid fa-gears"></i> Matricule</label>
-            <input type="text" name="matricule" id="matricule" class="form-control" required>
-        </div>
+        
         <div>
             <label for="date"><i class="fa-solid fa-calendar-days"></i> Date</label>
             <input type="date" name="date" id="date" class="form-control" required>

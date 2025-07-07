@@ -8,7 +8,7 @@ from .models import CheckList
 # Vue pour gérer la saisie d'un checklist (POST + création objet)
 def CheckList_view(request):
     if request.method == 'POST':
-        matricule = request.POST.get('matricule')
+        #matricule = request.POST.get('matricule')
         machine = request.POST.get('machine')
         date = request.POST.get('date')
         sf = request.POST.get('sf')
@@ -16,9 +16,10 @@ def CheckList_view(request):
         equipe = request.POST.get('equipe')
         motif = request.POST.get('motif')
         controle_bobines = request.POST.get('controle_bobines')
-        pression_entree = request.POST.get('pression_entree') or None
-        pression_courroie = request.POST.get('pression_courroie') or None
+        pression_entree = request.POST.get('pression_entree') 
+        pression_courroie = request.POST.get('pression_courroie') 
         aspect = request.POST.get('aspect')
+        aspect_bobines  = request.POST.get('aspect_bobines')
         verification_blo = request.POST.get('verification_blo')
         validation_status = request.POST.get('validation_status', 'En attente')
 
@@ -53,7 +54,8 @@ def CheckList_view(request):
         cmp2_tr_mesuree = request.POST.get('cmp2_tr_mesuree')
 
         CheckList.objects.create(
-            matricule=matricule,
+            matricule_Saisie=request.user.username,
+            matricule_Valider=request.user.username,
             machine=machine,
             date=date,
             sf=sf,
@@ -64,6 +66,7 @@ def CheckList_view(request):
             pression_entree=pression_entree,
             pression_courroie=pression_courroie,
             aspect=aspect,
+            aspect_bobines =aspect_bobines ,
             verification_blo=verification_blo,
             validation_status=validation_status,
 
@@ -96,7 +99,17 @@ def CheckList_view(request):
             cmp2_hr_mesuree=cmp2_hr_mesuree,
             cmp2_tr_min=cmp2_tr_min,
             cmp2_tr_mesuree=cmp2_tr_mesuree,
+
+            
+
+
+
+               
+            
+            
         )
+        
+        
         return redirect('checklist')
     return render(request, 'htmlfile.html')
 
@@ -144,32 +157,32 @@ def validefile_view(request):
 # Connexion utilisateur - saisisseur
 def user_login(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        username = request.POST['username']
+        password = request.POST['password']
         user = authenticate(request, username=username, password=password)
 
-        if user is not None:
+        if user is not None and is_saisisseur(user):
             login(request, user)
             return redirect('htmlfile')
         else:
-            return render(request, 'login.html', {'error': 'Login ou mot de passe incorrect.Essayez encore'})
-    else:    
-        return render(request, 'login.html')
+            return render(request, 'login.html', {'error': "Vous n'êtes pas autorisé à accéder à cet espace."})
+    return render(request, 'login.html')
 
 
 # Connexion utilisateur - validateur
 def user_loginn(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        username = request.POST['username']
+        password = request.POST['password']
         user = authenticate(request, username=username, password=password)
 
-        if user is not None:
+        if user is not None and is_validateur(user):
             login(request, user)
             return redirect('validefile')
         else:
-            return render(request, 'loginn.html', {'error': 'Login ou mot de passe incorrect.Essayez encore'})
+            return render(request, 'loginn.html', {'error': "Vous n'êtes pas autorisé à accéder à cet espace."})
     return render(request, 'loginn.html')
+
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 def logout_view(request):
@@ -192,9 +205,11 @@ def modifier_validation(request, checklist_id):
     checklist = get_object_or_404(CheckList, id=checklist_id)
     validation_status = request.POST.get('validation_status')
 
-    if validation_status in ['En attente', 'Valide', 'Non-Valide']:
-        checklist.validation_status = validation_status
-        checklist.save()
+    if validation_status in ['En attente', 'Valide', 'Non Valide']:
+       checklist.validation_status = validation_status
+       checklist.validated_by = request.user  # Ajoute cette ligne
+       checklist.save()
+
 
     return redirect('liste_checklists')
 
@@ -262,3 +277,51 @@ def dashboard_view(request):
         'par_machine': json.dumps(par_machine),
     }
     return render(request, 'dashboard.html', context)
+from django.contrib.auth.models import Group
+
+def is_saisisseur(user):
+    return user.groups.filter(name='SaisisseurOne').exists()
+
+def is_validateur(user):
+    return user.groups.filter(name='ValidateurOne').exists()
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.db.models import Q
+from .models import CheckList
+from django.shortcuts import render
+from datetime import datetime
+
+@login_required
+def historique_checklists(request):
+    checklists = CheckList.objects.all().order_by('-date')
+
+    statut = request.GET.get('statut')
+    saisisseur = request.GET.get('saisisseur')
+    validateur = request.GET.get('validateur')
+    date_debut = request.GET.get('date_debut')
+    date_fin = request.GET.get('date_fin')
+
+    if statut:
+        checklists = checklists.filter(validation_status=statut)
+
+    if saisisseur:
+        checklists = checklists.filter(created_by__username__icontains=saisisseur)
+
+    if validateur:
+        checklists = checklists.filter(validated_by__username__icontains=validateur)
+
+    if date_debut:
+        checklists = checklists.filter(date__gte=date_debut)
+
+    if date_fin:
+        checklists = checklists.filter(date__lte=date_fin)
+
+    return render(request, 'historique.html', {
+        'checklists': checklists,
+        'statut': statut,
+        'saisisseur': saisisseur,
+        'validateur': validateur,
+        'date_debut': date_debut,
+        'date_fin': date_fin
+    })

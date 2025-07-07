@@ -1,77 +1,66 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8" />
-    <title>Connexion - Validateur</title>
+    <title>Connexion - Saisisseur</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #e7f0ee, #6872a0);
             margin: 0;
-            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f4f8;
             display: flex;
-            align-items: center;
-            justify-content: center;
             height: 100vh;
-            position: relative;
-            overflow: hidden;
         }
 
-        /* Filigrane léger ONETECH en fond */
-        body::before {
-            content: "ONETECH";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-30deg);
-            font-size: 10rem;
-            font-weight: 900;
-            color: rgba(255, 102, 0, 0.07); /* orange très clair */
-            z-index: 0;
-            user-select: none;
-            pointer-events: none;
-            font-family: 'Poppins', sans-serif;
+        .left-section {
+            width: 50%;
+            background: url("{% static 'saisie.jpg' %}") no-repeat center center;
+            background-size: cover;
+            background-color: rgba(0, 0, 0, 0.5);
+            background-blend-mode: overlay;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px;
         }
 
-        .login-container {
-            background-color: #ffffff;
-            padding: 40px 50px;
-            border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-            width: 380px;
-            position: relative;
-            z-index: 2;
-            border: 3px solid transparent;
-            background-clip: padding-box;
-            border-image-slice: 1;
-            border-image-source: linear-gradient(45deg, #ff6600, #0047ab);
-            transition: border-color 0.4s ease, transform 0.3s ease, box-shadow 0.3s ease;
-            animation: pulse 6s ease-in-out infinite;
+        .left-section h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
         }
 
-        .login-container:hover {
-            transform: scale(1.05);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+        .left-section p {
+            font-size: 18px;
+            line-height: 1.5;
         }
 
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-            }
-            50% {
-                transform: scale(1.02);
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            }
+        .right-section {
+            width: 50%;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
         }
 
-        .login-container h2 {
+        .login-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+            border-top: 6px solid #ff6600;
+        }
+
+        .login-box h2 {
             text-align: center;
-            margin-bottom: 25px;
             color: #0047ab;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            font-size: 1.8rem;
+            margin-bottom: 30px;
+            font-size: 28px;
         }
 
         form {
@@ -80,65 +69,83 @@
         }
 
         label {
-            margin-bottom: 6px;
             font-weight: 600;
+            margin-bottom: 8px;
             color: #333;
         }
 
         input[type="text"],
         input[type="password"] {
-            padding: 10px 12px;
+            padding: 12px;
             margin-bottom: 20px;
+            border: 1px solid #ccc;
             border-radius: 8px;
-            border: 1.5px solid #ccc;
-            font-size: 1em;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            font-size: 16px;
         }
 
-        input[type="text"]:focus,
-        input[type="password"]:focus {
+        input:focus {
+            border-color: #ff6600;
             outline: none;
-            border-color: #ff6600; /* orange */
-            box-shadow: 0 0 8px rgba(255, 102, 0, 0.6);
+            box-shadow: 0 0 6px rgba(255, 102, 0, 0.4);
         }
 
         button {
-            padding: 12px;
             background: linear-gradient(45deg, #ff6600, #0047ab);
-            color: white;
-            font-weight: 700;
+            color: #fff;
             border: none;
-            border-radius: 10px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
             cursor: pointer;
-            font-size: 1.1em;
-            transition: background 0.4s ease, box-shadow 0.3s ease;
-            box-shadow: 0 6px 15px rgba(255, 102, 0, 0.6);
+            font-size: 16px;
+            transition: background 0.3s ease;
         }
 
         button:hover {
             background: linear-gradient(45deg, #0047ab, #ff6600);
-            box-shadow: 0 8px 20px rgba(0, 71, 171, 0.7);
         }
 
         .error-message {
-            color: #d9534f;
-            font-size: 0.9em;
-            margin-bottom: 15px;
+            color: #d32f2f;
             text-align: center;
+            margin-bottom: 15px;
         }
 
-        /* Responsive */
-        @media (max-width: 420px) {
-            .login-container {
-                width: 90%;
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+
+            .left-section, .right-section {
+                width: 100%;
+                height: auto;
+            }
+
+            .left-section {
+                padding: 30px;
+                text-align: center;
+            }
+
+            .left-section h1 {
+                font-size: 36px;
+            }
+
+            .login-box {
                 padding: 30px 20px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Page de connexion Validateur</h2>
+
+<div class="left-section">
+    <h1>Bienvenue sur ONETECH</h1>
+    <p>Accédez à votre espace pour saisir les données de production, valider les opérations et améliorer la qualité.</p>
+</div>
+
+<div class="right-section">
+    <div class="login-box">
+        <h2>Connexion Validateur</h2>
         <form method="POST">
             {% csrf_token %}
             {% if error %}
@@ -146,10 +153,14 @@
             {% endif %}
             <label for="username">Nom d'utilisateur :</label>
             <input type="text" id="username" name="username" required autofocus />
+
             <label for="password">Mot de passe :</label>
             <input type="password" id="password" name="password" required />
+
             <button type="submit">Se connecter</button>
         </form>
     </div>
+</div>
+
 </body>
 </html>
